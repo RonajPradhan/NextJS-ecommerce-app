@@ -1,3 +1,2 @@
-export default function index() {
-  return <div>Hello</div>;
-}
+// Since out home page is the products page
+export { default } from "./product";
