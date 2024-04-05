@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import Product from "./Product";
 import styled from "styled-components";
 
-const ALL_PRODUCTS_QUERY = gql`
+export const ALL_PRODUCTS_QUERY = gql`
 	query ALL_PRODUCTS_QUERY {
 		allProducts {
 			id
