@@ -5,13 +5,13 @@ export default function useForm(initial = {}) {
 	const [inputs, setInputs] = useState(initial);
 
 	const handleChange = (e) => {
-		const { name, value, type } = e.target;
+		let { name, value, type } = e.target;
 
 		if (type === "number") {
-			let value = parseInt(value, 10);
+			value = parseInt(value, 10);
 		}
 		if (type === "file") {
-			value[0] = e.target.files;
+			[value] = e.target.files;
 		}
 		setInputs({
 			...inputs,
