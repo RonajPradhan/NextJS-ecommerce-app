@@ -1,0 +1,6 @@
+{
+	"rules": {
+		"indent": ["error", "space"],
+		"prettier/prettier": [2, { "useTabs": false }]
+	}
+}
