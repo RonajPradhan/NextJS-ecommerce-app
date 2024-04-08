@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import Head from "next/head";
 import styled from "styled-components";
 import DisplayError from "./ErrorMessage";
+import Link from "next/link";
 
 const SINGLE_ITEM_QUERY = gql`
 	query ($id: ID!) {
