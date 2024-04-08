@@ -28,34 +28,28 @@ export default function SignIn() {
 		email: "",
 		password: "",
 	});
-
 	const [signin, { data, loading }] = useMutation(SIGNIN_MUTATION, {
 		variables: inputs,
 		// refetch the currently logged in user
 		refetchQueries: [{ query: CURRENT_USER_QUERY }],
 	});
-
 	async function handleSubmit(e) {
 		e.preventDefault(); // stop the form from submitting
 		const res = await signin();
 		resetForm();
 		// Send the email and password to the graphqlAPI
 	}
+	const error =
+		data?.authenticateUserWithPassword.__typename ===
+		"UserAuthenticationWithPasswordFailure"
+			? data?.authenticateUserWithPassword
+			: undefined;
 
-	console.log(data?.authenticatedUserWithPassword);
-
-	// const error =
-	// 	data?.authenticatedUserWithPassword?.__typename ===
-	// 	"UserAuthenticationWithPasswordFailure"
-	// 		? data?.authenticateUserWithPassword
-	// 		: undefined;
-
-	// console.log(error);
-
+	console.log(error);
 	return (
 		<Form method="POST" onSubmit={handleSubmit}>
 			<h2>Sign Into Your Account</h2>
-			{/* <Error error={error} /> */}
+			<Error error={error} />
 			<fieldset>
 				<label htmlFor="email">
 					Email
