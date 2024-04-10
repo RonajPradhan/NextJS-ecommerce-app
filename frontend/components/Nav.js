@@ -1,6 +1,7 @@
 import Link from "next/link";
 import NavStyles from "./styles/NavStyles";
 import { useUser } from "../lib/useUser";
+import SignOut from "./SignOut";
 
 export default function Nav() {
 	const user = useUser();
@@ -13,6 +14,7 @@ export default function Nav() {
 					<Link href="/orders">Orders</Link>
 					<Link href="/sell">Sell</Link>
 					<Link href="/account">Account</Link>
+					<SignOut />
 				</>
 			)}
 			{!user && (
