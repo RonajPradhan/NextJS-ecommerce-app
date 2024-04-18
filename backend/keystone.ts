@@ -1,18 +1,20 @@
-import 'dotenv/config';
-import { config, createSchema } from '@keystone-next/keystone/schema';
-import { User } from './schemas/User';
-import { createAuth } from '@keystone-next/auth';
+import "dotenv/config";
+import { config, createSchema } from "@keystone-next/keystone/schema";
+import { User } from "./schemas/User";
+import { createAuth } from "@keystone-next/auth";
 import {
 	withItemData,
 	statelessSessions,
-} from '@keystone-next/keystone/session';
-import { Product } from './schemas/Product';
-import { ProductImage } from './schemas/ProductImage';
-import { insertSeedData } from './seed-data';
+} from "@keystone-next/keystone/session";
+import { Product } from "./schemas/Product";
+import { ProductImage } from "./schemas/ProductImage";
+import { insertSeedData } from "./seed-data";
+import { CartItem } from "./schemas/CartItem";
+import { extendGraphQLSchema } from "./mutations";
 
 const databaseURL =
 	process.env.DATABASE_URL ||
-	'mongodb://localhost/keystone-sleek-fits-tutorial';
+	"mongodb://localhost/keystone-sleek-fits-tutorial";
 
 const sessionConfig = {
 	maxAge: 60 * 60 * 24 * 360, //How long should they stay signed in?
@@ -20,18 +22,18 @@ const sessionConfig = {
 };
 
 const { withAuth } = createAuth({
-	listKey: 'User', //which schema is responsible for auth
-	identityField: 'email', //login email
-	secretField: 'password', //login password
+	listKey: "User", //which schema is responsible for auth
+	identityField: "email", //login email
+	secretField: "password", //login password
 	initFirstItem: {
-		fields: ['name', 'email', 'password'], //init
+		fields: ["name", "email", "password"], //init
 		// Add in initial roles here
 	},
 	passwordResetLink: {
 		async sendToken(args) {
-			console.log(args)
-		}
-	}
+			console.log(args);
+		},
+	},
 });
 
 export default withAuth(
@@ -43,11 +45,11 @@ export default withAuth(
 			},
 		},
 		db: {
-			adapter: 'mongoose',
+			adapter: "mongoose",
 			url: databaseURL,
 			// TODO: Add data seeding here
 			async onConnect(keystone) {
-				if (process.argv.includes('--seed-data')) {
+				if (process.argv.includes("--seed-data")) {
 					await insertSeedData(keystone);
 				}
 			},
@@ -57,7 +59,9 @@ export default withAuth(
 			User: User,
 			Product: Product,
 			ProductImage: ProductImage,
+			CartItem: CartItem,
 		}),
+		extendGraphqlSchema: extendGraphQLSchema,
 		ui: {
 			// show the UI only for people who ass this test
 			isAccessAllowed: ({ session }) => {
@@ -67,7 +71,7 @@ export default withAuth(
 		},
 		session: withItemData(statelessSessions(sessionConfig), {
 			// graphQL query
-			User: 'id name email',
+			User: "id name email",
 		}),
 	})
 );
