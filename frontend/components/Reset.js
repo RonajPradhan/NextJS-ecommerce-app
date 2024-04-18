@@ -27,7 +27,7 @@ export default function Reset({token}) {
 		token: token,
 		password: "",
 	});
-	const [reset, { data, loading }] = useMutation(RESET_MUTATION, {
+	const [reset, { data, loading, successfulError }] = useMutation(RESET_MUTATION, {
 		variables: inputs,
 	});
 	async function handleSubmit(e) {
@@ -42,8 +42,8 @@ export default function Reset({token}) {
 
 	return (
 		<Form method="POST" onSubmit={handleSubmit}>
-			<h2>Request for password reset</h2>
-			<Error error={error} />
+			<h2>Reset your password</h2>
+			<Error error={error || successfulError} />
 			<fieldset>
 				{data?.redeemUserPassowedResetToken === null && (
 					<p>Success - You can Sign in!</p>
@@ -68,16 +68,6 @@ export default function Reset({token}) {
 						placeholder="Your Password"
 						autoComplete="password"
 						value={inputs.email}
-						onChange={handleChange}
-					/>
-				</label>
-				<label htmlFor="token">
-					Token
-					<input
-						type="text"
-						name="token"
-						placeholder="Token"
-						value={inputs.token}
 						onChange={handleChange}
 					/>
 				</label>
